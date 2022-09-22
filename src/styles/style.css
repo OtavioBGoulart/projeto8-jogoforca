@@ -1,5 +1,5 @@
-button :hover {
-    cursor: pointer;
+* {
+    box-sizing: border-box;
 }
 
 .img-palavra {
@@ -39,13 +39,17 @@ button :hover {
     font-weight: 1000;
 }
 
+button:hover {
+    cursor: pointer;
+}
+
 .palavra {
     display: flex;
     gap: 10px;
 }
 
 .palavra p {
-    font-size: 60px;
+    font-size: 50px;
 }
 
 .caixa-teclas {
@@ -57,10 +61,18 @@ button :hover {
     gap: 10px;
 }
 
+
 .botao-letra {
     width: 65px;
-    height: 65px;  
+    height: 65px;
     font-size: 30px;
     font-weight: 700;
+    border-radius: 5px;
+    border: 1px solid rgb(131, 131, 225);
+    background-color: rgb(193, 214, 222);
 }
 
+.botao-letra:disabled {
+    background-color: rgba(128, 128, 128, 0.792);
+    border: none;
+}
