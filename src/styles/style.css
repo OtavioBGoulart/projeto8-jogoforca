@@ -13,7 +13,7 @@
     margin-top: 50px;
 }
 
-.stage0 {
+.stage {
     width: 350px;
     height: 500px;
 }
@@ -70,9 +70,80 @@ button:hover {
     border-radius: 5px;
     border: 1px solid rgb(131, 131, 225);
     background-color: rgb(193, 214, 222);
+    color: rgb(38, 38, 101);
 }
 
 .botao-letra:disabled {
     background-color: rgba(128, 128, 128, 0.792);
+    color: gray;
     border: none;
 }
+
+.caixa-chute {
+    width: 850px;
+    display: flex;
+    margin: 40px auto;
+    justify-content: space-evenly;
+}
+
+.caixa-chute p {
+    font-size: 35px;
+    text-align: center;
+}
+
+.caixa-chute input {
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+.botao-chutar {
+    width: 100px;
+    height: 45px;
+    font-size: 25px;
+    font-weight: 700;
+    border-radius: 5px;
+    border: 1px solid rgb(131, 131, 225);
+    background-color: rgb(193, 214, 222);
+}
+
+
+@media (max-width: 1140px) {
+    .img-palavra {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .caixa-teclas {
+        width: 650px;
+    }
+
+    .botao-letra {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+
+/* @media (max-width: 700px) {
+
+    .stage {
+        width: 200px;
+    }
+
+    .button-escolhe-palavra {
+        width: 80px;
+    }
+
+    .caixa-teclas {
+        width: 400px;
+    }
+
+    .botao-letra {
+        width: 40px;
+        height: 40px;
+    }
+} */

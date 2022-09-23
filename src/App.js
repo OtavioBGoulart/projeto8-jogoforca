@@ -1,29 +1,47 @@
 import forca0 from "./img/forca0.png";
+import forca1 from "./img/forca1.png";
+import forca2 from "./img/forca2.png";
+import forca3 from "./img/forca3.png";
+import forca4 from "./img/forca4.png";
+import forca5 from "./img/forca5.png";
 import forca6 from "./img/forca6.png";
 import alfabeto from "./alfabeto";
+import palavras from "./palavras"
 import React, { useState } from "react";
 
 let arrayLetrasPalavraEscolhida = [];
+let erros = 0;
+console.log("forca", forca0)
 
-function Forca() {
+function Forca({ atualizaForca, setAtualizaForca }) {
     /* const placar = 6;
     const forca = "forca" */
     return (
         <div className="forca">
-            <img src={forca0} className="stage0" alt="" />
+            <img src={atualizaForca} className="stage" alt="" />
         </div>
     )
 }
 
-function GeraLetras({ preenchendoForca, setPreenchendoForca, desabilitaBotao, setDesabilitaBotao }) {
+function GeraLetras({ preenchendoForca,
+    setPreenchendoForca,
+    desabilitaBotao,
+    setDesabilitaBotao,
+    atualizaForca,
+    setAtualizaForca,
+    corResultado,
+    setCorResultado }) {
 
     function escolhePalavraAleatoria() {
-        const palavraEscolhida = "bom"
+        erros = 0;
+        setAtualizaForca(forca0);
+        const palavraEscolhida = palavras[Math.floor(Math.random() * palavras.length)];
+        console.log(palavraEscolhida);
         arrayLetrasPalavraEscolhida = palavraEscolhida.split('');
 
         const arrayUnderlined = arrayLetrasPalavraEscolhida.map(() => "_");
         setPreenchendoForca(arrayUnderlined);
-        const preencheFalse = alfabeto.map(() => false) 
+        const preencheFalse = alfabeto.map(() => false)
         setDesabilitaBotao(preencheFalse);
     }
 
@@ -34,22 +52,31 @@ function GeraLetras({ preenchendoForca, setPreenchendoForca, desabilitaBotao, se
                 <p>Escolher Palavra</p>
             </button>
             <div className="palavra">
-                {preenchendoForca.map((letra, index) => <p key={index}>{letra}</p>)}
+                {preenchendoForca.map((letra, index) => <p key={index} style={{ color: corResultado }}>{letra}</p>)}
             </div>
         </div>
     )
 }
 
-function TecladoAlfabeto({ preenchendoForca, setPreenchendoForca, desabilitaBotao, setDesabilitaBotao }) {
+function TecladoAlfabeto({ preenchendoForca,
+    setPreenchendoForca,
+    desabilitaBotao,
+    setDesabilitaBotao,
+    atualizaForca,
+    setAtualizaForca,
+    corResultado,
+    setCorResultado }) {
 
 
 
     function confereLetra(letra, index) {
-        console.log(arrayLetrasPalavraEscolhida);
 
+        if (erros >= 6) {
+            return
+        }
 
-        function mapa(value, index) {
-    
+        function mapeiaArray(value, index) {
+
             if (preenchendoForca[index] === "_" && value === letra) {
                 return value
             } else if (preenchendoForca[index] === value) {
@@ -58,12 +85,61 @@ function TecladoAlfabeto({ preenchendoForca, setPreenchendoForca, desabilitaBota
                 return "_"
             }
         }
-        const mostraLetra = arrayLetrasPalavraEscolhida.map(mapa);
-        console.log(mostraLetra);
-        setPreenchendoForca(mostraLetra);
+
+        if (arrayLetrasPalavraEscolhida.includes(letra)) {
+            const mostraLetra = arrayLetrasPalavraEscolhida.map(mapeiaArray);
+            setPreenchendoForca(mostraLetra);
+        } else {
+            erros = erros + 1;
+            console.log(erros)
+            let forcaAtualizada;
+            //const forcaAtualizada = `forca${erros}`;
+            //console.log(typeof forcaAtualizada)
+
+            switch (erros) {
+                case 1:
+                    forcaAtualizada = forca1
+                    break;
+                case 2:
+                    forcaAtualizada = forca2
+                    break;
+
+                case 3:
+                    forcaAtualizada = forca3
+                    break;
+
+                case 4:
+                    forcaAtualizada = forca4
+                    break;
+
+                case 5:
+                    forcaAtualizada = forca5
+                    break;
+
+                case 6:
+                    forcaAtualizada = forca6
+                    break;
+
+            }
+            console.log("forcaatualizada", forcaAtualizada);
+            setAtualizaForca(forcaAtualizada);
+        }
+
         const trocaBotao = [...desabilitaBotao];
-        trocaBotao[index] = true 
+        trocaBotao[index] = true
         setDesabilitaBotao(trocaBotao);
+        console.log(erros);
+
+        if (erros === 6) {
+            Perdeu();
+        }
+
+        function Perdeu() {
+            setPreenchendoForca(arrayLetrasPalavraEscolhida);
+            setCorResultado("red");
+            const preencheFalse = alfabeto.map(() => false);
+            setDesabilitaBotao(preencheFalse);
+        }
 
     }
 
@@ -74,20 +150,38 @@ function TecladoAlfabeto({ preenchendoForca, setPreenchendoForca, desabilitaBota
     )
 }
 
+function Chute() {
+    return (
+        <div className="caixa-chute">
+            <p>Já sei a palavra</p>
+            <input></input>
+            <button className="botao-chutar">Chutar</button>
+        </div>
+    )
+}
+
 export default function App() {
-    const preencherTrue = alfabeto.map(() => true) 
+    const preencherTrue = alfabeto.map(() => true)
     const [preenchendoForca, setPreenchendoForca] = useState([]);
     const [desabilitaBotao, setDesabilitaBotao] = useState(preencherTrue);
-    console.log(desabilitaBotao);
+    const [atualizaForca, setAtualizaForca] = useState(forca0);
+    const [corResultado, setCorResultado] = useState("black");
+    console.log(atualizaForca);
 
 
     return (
         <>
             <div className="img-palavra">
-                <Forca />
-                <GeraLetras arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca} setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao} />
+                <Forca atualizaForca={atualizaForca} setAtualizaForca={atualizaForca} />
+                <GeraLetras arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca}
+                    setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
+                    atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado} />
             </div>
-            <TecladoAlfabeto arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca} setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao} />
+            <TecladoAlfabeto arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca}
+                setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
+                atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado} />
+            <Chute />
         </>
     )
 }
+
