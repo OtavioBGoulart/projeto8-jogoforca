@@ -23,7 +23,8 @@ function GeraLetras({ preenchendoForca, setPreenchendoForca, desabilitaBotao, se
 
         const arrayUnderlined = arrayLetrasPalavraEscolhida.map(() => "_");
         setPreenchendoForca(arrayUnderlined);
-        setDesabilitaBotao(false);
+        const preencheFalse = alfabeto.map(() => false) 
+        setDesabilitaBotao(preencheFalse);
     }
 
 
@@ -41,45 +42,42 @@ function GeraLetras({ preenchendoForca, setPreenchendoForca, desabilitaBotao, se
 
 function TecladoAlfabeto({ preenchendoForca, setPreenchendoForca, desabilitaBotao, setDesabilitaBotao }) {
 
-    /* function preencheLetras(value, index) {
-        console.log(value);
-        if (preenchendoForca[index] === "_" && value === letra) {
-            return value
-        } else if (preenchendoForca[index] === value) {
-            return preenchendoForca[index]
-        } else {
-            return "_"
-        }
-    }; */
 
 
-    function confereLetra(letra) {
+    function confereLetra(letra, index) {
         console.log(arrayLetrasPalavraEscolhida);
 
-        //const mostraLetra = arrayLetrasPalavraEscolhida.map(preencheLetras(value, index));
-        //console.log(mostraLetra);
 
-        /* setDesabilitaBotao(true) */
-        /* if (arrayLetras.includes(letra)) {
-            const mostraLetra = [...preenchendoForca];
-            arrayLetras.filter
-            
-        } */
-        //setPreenchendoForca(mostraLetra);
-        //setDesabilitaBotao(desabilitarClicado);
+        function mapa(value, index) {
+    
+            if (preenchendoForca[index] === "_" && value === letra) {
+                return value
+            } else if (preenchendoForca[index] === value) {
+                return preenchendoForca[index]
+            } else {
+                return "_"
+            }
+        }
+        const mostraLetra = arrayLetrasPalavraEscolhida.map(mapa);
+        console.log(mostraLetra);
+        setPreenchendoForca(mostraLetra);
+        const trocaBotao = [...desabilitaBotao];
+        trocaBotao[index] = true 
+        setDesabilitaBotao(trocaBotao);
 
     }
 
     return (
         <div className="caixa-teclas">
-            {alfabeto.map((letra, index) => <button key={index} onClick={() => confereLetra(letra)} className="botao-letra" disabled={desabilitaBotao}>{letra.toUpperCase()}</button>)}
+            {alfabeto.map((letra, index) => <button key={index} onClick={() => confereLetra(letra, index)} className="botao-letra" disabled={desabilitaBotao[index]}>{letra.toUpperCase()}</button>)}
         </div>
     )
 }
 
 export default function App() {
+    const preencherTrue = alfabeto.map(() => true) 
     const [preenchendoForca, setPreenchendoForca] = useState([]);
-    const [desabilitaBotao, setDesabilitaBotao] = useState(true);
+    const [desabilitaBotao, setDesabilitaBotao] = useState(preencherTrue);
     console.log(desabilitaBotao);
 
 
