@@ -43,6 +43,7 @@ function GeraLetras({ preenchendoForca,
         palavraSemCaracteresEspeciais = palavraEscolhida.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         //console.log(palavraSemCaracteresEspeciais);
         //console.log(palavraEscolhida);
+        console.log(palavras.length);
         arrayLetrasPalavraEscolhida = palavraEscolhida.split('');
         arraySemCaracteres = palavraSemCaracteresEspeciais.split('');
         console.log(arraySemCaracteres)
@@ -93,6 +94,7 @@ function TecladoAlfabeto({ preenchendoForca,
 
         function mapeiaArray(value, index) {
 
+            console.log(letra);
             if (preenchendoForca[index] === "_" && value === letra) {
                 return arrayLetrasPalavraEscolhida[index]
             } else if (preenchendoForca[index] === arrayLetrasPalavraEscolhida[index]) {
@@ -102,7 +104,7 @@ function TecladoAlfabeto({ preenchendoForca,
             }
         }
 
-        if (arrayLetrasPalavraEscolhida.includes(letra)) {
+        if (arraySemCaracteres.includes(letra)) {
             
             const mostraLetra = arraySemCaracteres.map(mapeiaArray);
             setPreenchendoForca(mostraLetra);
@@ -112,7 +114,7 @@ function TecladoAlfabeto({ preenchendoForca,
             for (let i = 0; i < arrayLetrasPalavraEscolhida.length; i++) {
                 if (mostraLetra[i] === arrayLetrasPalavraEscolhida[i]) {
                     confereAcerto++;
-                    console.log(confereAcerto)
+                    //console.log(confereAcerto)
                 }
             }
     
