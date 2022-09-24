@@ -83,7 +83,7 @@ button:hover {
     width: 850px;
     display: flex;
     margin: 40px auto;
-    justify-content: space-evenly;
+    justify-content: space-between;
 }
 
 .caixa-chute p {
@@ -93,6 +93,8 @@ button:hover {
 
 .caixa-chute input {
     width: 300px;
+    font-size: 20px;
+    margin-right: 95px;
     background-color: white;
     border-radius: 8px;
 }
@@ -105,6 +107,7 @@ button:hover {
     border-radius: 5px;
     border: 1px solid rgb(131, 131, 225);
     background-color: rgb(193, 214, 222);
+    color: rgb(38, 38, 101);
 }
 
 

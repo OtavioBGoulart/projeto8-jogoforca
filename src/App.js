@@ -11,7 +11,7 @@ import React, { useState } from "react";
 
 let arrayLetrasPalavraEscolhida = [];
 let erros = 0;
-console.log("forca", forca0)
+let palavraEscolhida;
 
 function Forca({ atualizaForca, setAtualizaForca }) {
     /* const placar = 6;
@@ -30,19 +30,27 @@ function GeraLetras({ preenchendoForca,
     atualizaForca,
     setAtualizaForca,
     corResultado,
-    setCorResultado }) {
+    setCorResultado,
+    desabilitaInput,
+    setDesabilitaInput }) {
 
     function escolhePalavraAleatoria() {
         erros = 0;
         setAtualizaForca(forca0);
-        const palavraEscolhida = palavras[Math.floor(Math.random() * palavras.length)];
+        palavraEscolhida = palavras[Math.floor(Math.random() * palavras.length)];
         console.log(palavraEscolhida);
         arrayLetrasPalavraEscolhida = palavraEscolhida.split('');
+        //console.log(arrayLetrasPalavraEscolhida);
 
         const arrayUnderlined = arrayLetrasPalavraEscolhida.map(() => "_");
         setPreenchendoForca(arrayUnderlined);
         const preencheFalse = alfabeto.map(() => false)
         setDesabilitaBotao(preencheFalse);
+
+        setDesabilitaInput(false);
+
+        setCorResultado("black");
+
     }
 
 
@@ -65,7 +73,9 @@ function TecladoAlfabeto({ preenchendoForca,
     atualizaForca,
     setAtualizaForca,
     corResultado,
-    setCorResultado }) {
+    setCorResultado,
+    desabilitaInput,
+    setDesabilitaInput }) {
 
 
 
@@ -87,14 +97,27 @@ function TecladoAlfabeto({ preenchendoForca,
         }
 
         if (arrayLetrasPalavraEscolhida.includes(letra)) {
+            
             const mostraLetra = arrayLetrasPalavraEscolhida.map(mapeiaArray);
             setPreenchendoForca(mostraLetra);
+
+            let confereAcerto = 0;
+
+            for (let i = 0; i < arrayLetrasPalavraEscolhida.length; i++) {
+                if (mostraLetra[i] === arrayLetrasPalavraEscolhida[i]) {
+                    confereAcerto++;
+                    console.log(confereAcerto)
+                }
+            }
+    
+            if (confereAcerto === preenchendoForca.length) {
+                ganhou();
+            }
+            
         } else {
             erros = erros + 1;
-            console.log(erros)
+
             let forcaAtualizada;
-            //const forcaAtualizada = `forca${erros}`;
-            //console.log(typeof forcaAtualizada)
 
             switch (erros) {
                 case 1:
@@ -120,25 +143,38 @@ function TecladoAlfabeto({ preenchendoForca,
                     forcaAtualizada = forca6
                     break;
 
+                default:
+                    return null;
+
             }
-            console.log("forcaatualizada", forcaAtualizada);
             setAtualizaForca(forcaAtualizada);
         }
 
         const trocaBotao = [...desabilitaBotao];
         trocaBotao[index] = true
         setDesabilitaBotao(trocaBotao);
-        console.log(erros);
+        //console.log(erros);
 
         if (erros === 6) {
-            Perdeu();
+            perdeu();
         }
 
-        function Perdeu() {
+        function perdeu() {
             setPreenchendoForca(arrayLetrasPalavraEscolhida);
             setCorResultado("red");
-            const preencheFalse = alfabeto.map(() => false);
-            setDesabilitaBotao(preencheFalse);
+            const preencherTrue = alfabeto.map(() => true);
+            setDesabilitaBotao(preencherTrue);
+
+            setDesabilitaInput(true);
+        }
+
+        function ganhou() {
+            setPreenchendoForca(arrayLetrasPalavraEscolhida);
+            setCorResultado("green");
+            const preencherTrue = alfabeto.map(() => true);
+            setDesabilitaBotao(preencherTrue);
+
+            setDesabilitaInput(true);
         }
 
     }
@@ -150,12 +186,60 @@ function TecladoAlfabeto({ preenchendoForca,
     )
 }
 
-function Chute() {
+function Chute({ desabilitaInput,
+    setDesabilitaInput,
+    chutePalavra,
+    setChutePalavra,
+    preenchendoForca,
+    setPreenchendoForca,
+    corResultado,
+    setCorResultado,
+    desabilitaBotao,
+    setDesabilitaBotao,
+}) {
+
+    function mudouInput(event) {
+        setChutePalavra(event.target.value);
+    }
+
+    function chutar() {
+
+        if (corResultado === "green") {
+            return
+        }
+
+        if (palavraEscolhida !== chutePalavra) {
+            perdeu()
+        } else {
+            ganhou()
+        }
+
+        setChutePalavra("");
+    }
+
+    function perdeu() {
+        setPreenchendoForca(arrayLetrasPalavraEscolhida);
+        setCorResultado("red");
+        const preencherTrue = alfabeto.map(() => true);
+        setDesabilitaBotao(preencherTrue);
+
+        setDesabilitaInput(true);
+    }
+
+    function ganhou() {
+        setPreenchendoForca(arrayLetrasPalavraEscolhida);
+        setCorResultado("green");
+        const preencherTrue = alfabeto.map(() => true);
+        setDesabilitaBotao(preencherTrue);
+
+        setDesabilitaInput(true);
+    }
+
     return (
         <div className="caixa-chute">
             <p>Já sei a palavra</p>
-            <input></input>
-            <button className="botao-chutar">Chutar</button>
+            <input disabled={desabilitaInput} value={chutePalavra} onChange={mudouInput}></input>
+            <button className="botao-chutar" onClick={chutar}>Chutar</button>
         </div>
     )
 }
@@ -165,8 +249,13 @@ export default function App() {
     const [preenchendoForca, setPreenchendoForca] = useState([]);
     const [desabilitaBotao, setDesabilitaBotao] = useState(preencherTrue);
     const [atualizaForca, setAtualizaForca] = useState(forca0);
+    const [desabilitaInput, setDesabilitaInput] = useState(true)
     const [corResultado, setCorResultado] = useState("black");
-    console.log(atualizaForca);
+    const [chutePalavra, setChutePalavra] = useState("");
+
+    console.log(preenchendoForca)
+    console.log("palavra escolhida", palavraEscolhida)
+
 
 
     return (
@@ -175,12 +264,16 @@ export default function App() {
                 <Forca atualizaForca={atualizaForca} setAtualizaForca={atualizaForca} />
                 <GeraLetras arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca}
                     setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
-                    atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado} />
+                    atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado}
+                    desabilitaInput={desabilitaInput} setDesabilitaInput={setDesabilitaInput} />
             </div>
             <TecladoAlfabeto arrayLetrasPalavraEscolhida={arrayLetrasPalavraEscolhida} preenchendoForca={preenchendoForca}
                 setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
-                atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado} />
-            <Chute />
+                atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca} corResultado={corResultado} setCorResultado={setCorResultado}
+                desabilitaInput={desabilitaInput} setDesabilitaInput={setDesabilitaInput} />
+            <Chute desabilitaInput={desabilitaInput} setDesabilitaInput={setDesabilitaInput} chutePalavra={chutePalavra} setChutePalavra={setChutePalavra}
+                preenchendoForca={preenchendoForca} setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
+                corResultado={corResultado} setCorResultado={setCorResultado} />
         </>
     )
 }
