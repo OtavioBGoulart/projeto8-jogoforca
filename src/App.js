@@ -12,6 +12,8 @@ import React, { useState } from "react";
 let arrayLetrasPalavraEscolhida = [];
 let erros = 0;
 let palavraEscolhida;
+let palavraSemCaracteresEspeciais;
+let arraySemCaracteres = [];
 
 function Forca({ atualizaForca, setAtualizaForca }) {
     /* const placar = 6;
@@ -38,9 +40,13 @@ function GeraLetras({ preenchendoForca,
         erros = 0;
         setAtualizaForca(forca0);
         palavraEscolhida = palavras[Math.floor(Math.random() * palavras.length)];
-        console.log(palavraEscolhida);
+        palavraSemCaracteresEspeciais = palavraEscolhida.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        //console.log(palavraSemCaracteresEspeciais);
+        //console.log(palavraEscolhida);
         arrayLetrasPalavraEscolhida = palavraEscolhida.split('');
-        //console.log(arrayLetrasPalavraEscolhida);
+        arraySemCaracteres = palavraSemCaracteresEspeciais.split('');
+        console.log(arraySemCaracteres)
+        console.log(arrayLetrasPalavraEscolhida);
 
         const arrayUnderlined = arrayLetrasPalavraEscolhida.map(() => "_");
         setPreenchendoForca(arrayUnderlined);
@@ -88,8 +94,8 @@ function TecladoAlfabeto({ preenchendoForca,
         function mapeiaArray(value, index) {
 
             if (preenchendoForca[index] === "_" && value === letra) {
-                return value
-            } else if (preenchendoForca[index] === value) {
+                return arrayLetrasPalavraEscolhida[index]
+            } else if (preenchendoForca[index] === arrayLetrasPalavraEscolhida[index]) {
                 return preenchendoForca[index]
             } else {
                 return "_"
@@ -98,7 +104,7 @@ function TecladoAlfabeto({ preenchendoForca,
 
         if (arrayLetrasPalavraEscolhida.includes(letra)) {
             
-            const mostraLetra = arrayLetrasPalavraEscolhida.map(mapeiaArray);
+            const mostraLetra = arraySemCaracteres.map(mapeiaArray);
             setPreenchendoForca(mostraLetra);
 
             let confereAcerto = 0;
@@ -253,7 +259,7 @@ export default function App() {
     const [corResultado, setCorResultado] = useState("black");
     const [chutePalavra, setChutePalavra] = useState("");
 
-    console.log(preenchendoForca)
+    //console.log(preenchendoForca)
     console.log("palavra escolhida", palavraEscolhida)
 
 
