@@ -41,13 +41,12 @@ function GeraLetras({ preenchendoForca,
         setAtualizaForca(forca0);
         palavraEscolhida = palavras[Math.floor(Math.random() * palavras.length)];
         palavraSemCaracteresEspeciais = palavraEscolhida.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        //console.log(palavraSemCaracteresEspeciais);
-        //console.log(palavraEscolhida);
-        console.log(palavras.length);
+        
+        
+        
         arrayLetrasPalavraEscolhida = palavraEscolhida.split('');
         arraySemCaracteres = palavraSemCaracteresEspeciais.split('');
-        console.log(arraySemCaracteres)
-        console.log(arrayLetrasPalavraEscolhida);
+        
 
         const arrayUnderlined = arrayLetrasPalavraEscolhida.map(() => "_");
         setPreenchendoForca(arrayUnderlined);
@@ -94,7 +93,7 @@ function TecladoAlfabeto({ preenchendoForca,
 
         function mapeiaArray(value, index) {
 
-            console.log(letra);
+            
             if (preenchendoForca[index] === "_" && value === letra) {
                 return arrayLetrasPalavraEscolhida[index]
             } else if (preenchendoForca[index] === arrayLetrasPalavraEscolhida[index]) {
@@ -120,6 +119,7 @@ function TecladoAlfabeto({ preenchendoForca,
     
             if (confereAcerto === preenchendoForca.length) {
                 ganhou();
+                return
             }
             
         } else {
@@ -174,6 +174,8 @@ function TecladoAlfabeto({ preenchendoForca,
             setDesabilitaBotao(preencherTrue);
 
             setDesabilitaInput(true);
+
+            
         }
 
         function ganhou() {
@@ -181,6 +183,7 @@ function TecladoAlfabeto({ preenchendoForca,
             setCorResultado("green");
             const preencherTrue = alfabeto.map(() => true);
             setDesabilitaBotao(preencherTrue);
+            console.log("oi")
 
             setDesabilitaInput(true);
         }
@@ -204,6 +207,8 @@ function Chute({ desabilitaInput,
     setCorResultado,
     desabilitaBotao,
     setDesabilitaBotao,
+    atualizaForca,
+    setAtualizaForca
 }) {
 
     function mudouInput(event) {
@@ -232,6 +237,8 @@ function Chute({ desabilitaInput,
         setDesabilitaBotao(preencherTrue);
 
         setDesabilitaInput(true);
+        setAtualizaForca(forca6);
+        
     }
 
     function ganhou() {
@@ -262,7 +269,6 @@ export default function App() {
     const [chutePalavra, setChutePalavra] = useState("");
 
     //console.log(preenchendoForca)
-    console.log("palavra escolhida", palavraEscolhida)
 
 
 
@@ -281,7 +287,7 @@ export default function App() {
                 desabilitaInput={desabilitaInput} setDesabilitaInput={setDesabilitaInput} />
             <Chute desabilitaInput={desabilitaInput} setDesabilitaInput={setDesabilitaInput} chutePalavra={chutePalavra} setChutePalavra={setChutePalavra}
                 preenchendoForca={preenchendoForca} setPreenchendoForca={setPreenchendoForca} desabilitaBotao={desabilitaBotao} setDesabilitaBotao={setDesabilitaBotao}
-                corResultado={corResultado} setCorResultado={setCorResultado} />
+                corResultado={corResultado} setCorResultado={setCorResultado} atualizaForca={atualizaForca} setAtualizaForca={setAtualizaForca}/>
         </>
     )
 }
